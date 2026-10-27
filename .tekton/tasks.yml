@@ -1,0 +1,31 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: cleanup
+spec:
+  description: Clean up temporary files before the pipeline runs.
+  steps:
+    - name: cleanup
+      image: alpine:3.20
+      script: |
+        #!/bin/sh
+        echo "Starting cleanup task"
+        rm -rf /tmp/test-results
+        echo "Cleanup completed"
+
+---
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: test
+spec:
+  description: Run Python unit tests using nose.
+  steps:
+    - name: run-tests
+      image: python:3.11-slim
+      script: |
+        #!/bin/sh
+        set -e
+        python -m pip install --no-cache-dir nose
+        echo "Running unit tests with nose"
+        nosetests
