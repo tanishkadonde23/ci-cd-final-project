@@ -20,6 +20,7 @@ spec:
         find "$WORKSPACE_SOURCE_PATH" -mindepth 1 -maxdepth 1 -exec rm -rf {} +
         echo "Cleanup completed"
 
+---
 apiVersion: tekton.dev/v1
 kind: Task
 metadata:
@@ -36,6 +37,5 @@ spec:
         #!/bin/sh
         set -eu
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
         pip install nose
         nosetests
