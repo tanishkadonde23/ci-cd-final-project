@@ -1,7 +1,7 @@
-# ci-cd-pipeline
+# cicd-final-project
 
-# CI/CD Pipeline with GitHub Actions, Tekton, and OpenShift
-
+## Project Name
+CI/CD Pipeline with GitHub Actions, Tekton, and OpenShift
 ## Project Overview
 
 This project demonstrates the implementation of a Continuous Integration and Continuous Deployment (CI/CD) pipeline using GitHub Actions, Tekton, and OpenShift.
