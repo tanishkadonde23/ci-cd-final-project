@@ -3,14 +3,19 @@ kind: Task
 metadata:
   name: cleanup
 spec:
-  description: Clean up temporary files before the pipeline runs.
+  description: Clean up the source workspace before the pipeline runs.
+  workspaces:
+    - name: source
   steps:
     - name: cleanup
       image: alpine:3.20
       script: |
         #!/bin/sh
+        set -e
         echo "Starting cleanup task"
-        rm -rf /tmp/test-results
+        if [ -n "$(WORKSPACE_SOURCE_PATH)" ] && [ -d "$(WORKSPACE_SOURCE_PATH)" ]; then
+          find "$(WORKSPACE_SOURCE_PATH)" -mindepth 1 -maxdepth 1 -exec rm -rf {} +
+        fi
         echo "Cleanup completed"
 
 ---
@@ -20,9 +25,12 @@ metadata:
   name: test
 spec:
   description: Run Python unit tests using nose.
+  workspaces:
+    - name: source
   steps:
-    - name: run-tests
+    - name: Run unit tests with nose
       image: python:3.11-slim
+      workingDir: $(workspaces.source.path)
       script: |
         #!/bin/sh
         set -e
